@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getUser, logout } from "../../services";
@@ -7,6 +6,12 @@ import { getUser, logout } from "../../services";
 export const DropdownLoggedIn = ({setDropdown}) => {
     const navigate = useNavigate();
     const [user, setUser] = useState({});
+
+    const handleLogout = useCallback(() => {
+        logout();
+        setDropdown(false);
+        navigate("/");
+    }, [setDropdown, navigate]);
 
     useEffect(() => {
         async function fetchData(){
@@ -18,13 +23,7 @@ export const DropdownLoggedIn = ({setDropdown}) => {
             }            
         }
         fetchData();
-    }, []);
-
-    function handleLogout(){
-        logout();
-        setDropdown(false);
-        navigate("/");
-    }
+    }, [handleLogout]);
 
   return (
     <div id="dropdownAvatar" className="select-none	absolute top-10 right-0 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
